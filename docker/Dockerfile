@@ -1,17 +1,12 @@
-FROM node:10-alpine
+FROM node:14.1.0
 
-RUN mkdir -p /home/node/app/node_modules && chown -R node:node /home/node/app
+RUN mkdir /usr/src/goof
+RUN mkdir /tmp/extracted_files
+COPY . /usr/src/goof
+WORKDIR /usr/src/goof
 
-WORKDIR /home/node/app
-
-COPY package*.json ./
-
-USER node
-
+RUN npm update
 RUN npm install
-
-COPY --chown=node:node . .
-
-EXPOSE 8080
-
-CMD [ "node", "app.js" ]
+EXPOSE 3001
+EXPOSE 9229
+ENTRYPOINT ["npm", "start"]
